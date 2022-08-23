@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Guess my number</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<h1>Guess The Number</h1>
+<hr>
+
+<div class="form">
+    <h5>Start Guessing a number between 1 to 20...</h5>
+	<label for = "guessField">Enter a guess: </label>
+	<input type = "number" id = "guessField" class = "guessField">
+	<input type = "submit" value = "Check!" class = "guessSubmit" id = "submitguess">
+    <br><br>
+    
+    <h4 id="score">💯Score: </h4>
+    <h4 id="highscore">🥇Highest Score:</h4>
+    <h5 id="resultMsg"></h5>
+    <input type="reset" value="Again!" onclick="resetBack()">
+</div>
+
+<script type = "text/javascript">
+
+    var high = 0;
+    
+	var secret = Math.floor(Math.random() * 20 + 1);
+    
+    console.log("Random number:",secret);
+	
+    var highscore = Number(localStorage.getItem('highscore'));
+    document.getElementById('highscore').innerText = "🥇Highest Score:" + highscore;
+
+    var score = 0;
+	document.getElementById("submitguess").onclick = function()
+    {
+        var enteredNumber = document.getElementById("guessField").value;
+        
+            if(enteredNumber == secret)
+            {	
+                console.log("CONGRATULATIONS!!! YOU GUESSED IT RIGHT ");
+                score = score + 10;
+                high = score;
+                console.log("Score:",score);
+                
+                document.getElementById("resultMsg").innerText = "CONGRATULATIONS!!! You guessed it right. Click on Again! to continue playing";
+                document.getElementById("score").innerHTML = "💯Score: " + score;
+                document.getElementById('highscore').innerHTML = "🥇Highest Score:" + high;
+                localStorage.setItem("highscore", score);
+                
+                if(highscore !== null)
+                {
+                    if (score > highscore) 
+                    {
+                        localStorage.setItem("highscore", score);      
+                    }
+                }
+                else
+                {
+                    localStorage.setItem("highscore", score);
+                }
+            }
+            else
+            {
+                score = score - 1;
+                console.log("Score:",score);
+                document.getElementById("score").innerHTML = "💯Score: " + score;
+                console.log("You guessed it wrong");
+                document.getElementById("resultMsg").innerText = "You guessed it wrong. Correct answer was: "+secret+" Click on Again! to continue playing";
+            }
+    }
+    function resetBack()
+    {
+        secret = Math.floor(Math.random() * 20 + 1);
+        console.log("Random number:",secret);
+        document.getElementById('highscore').innerHTML = "🥇Highest Score:" + localStorage.getItem('highscore');
+        document.getElementById("guessField").value = null;
+        document.getElementById("resultMsg").innerHTML = null;
+    }
+</script>
+</body>
+</html>					
