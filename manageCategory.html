@@ -1,0 +1,114 @@
+<html>
+    <head>
+        <title>Product management</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <div id="prod-warehouse">
+            <h2>Product Warehouse</h2>
+            <a href="addProduct.html">Add new Product</a>
+            <a href="manageProduct.html">Manage Product</a>
+            <a href="manageCategory.html">Manage Categories</a>
+            <hr color="black">
+            </div>
+            <br>
+            <h3>Manage Categories</h3>
+            <hr color="green">
+            <p>Add new Category</p>
+            <input type="text" id="new_category" size="30">
+            <br><br>
+            <button id="save_cat" size="30" onclick="SaveCategory()">Save Category</button><br><br>
+            
+            <h3 style="float:inline-end;">Category List</h3>
+            <input type="text" id="search-input-cat" placeholder="Search Category" size="70">
+            <div id="jsonCategory"></div>
+
+            <table>
+                 <tr>
+                    <th>ID</th>
+                    <th>Category</th>
+                </tr>
+                <tbody id="categories_table"></tbody>
+            </table>
+
+        <script>
+        function SaveCategory()
+        {
+            var name = document.getElementById('new_category').value;
+            console.log(name);
+            var addCategory= {
+                categoryName: name
+            }
+                var postCategory = {
+                    method: 'POST',
+                    headers: {
+                       'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(addCategory)
+                }
+                fetch('http://localhost:3000/postCategory',postCategory)
+                location.reload()
+        }
+                var categories =[];
+                $.ajax({
+                    method:'GET',
+                    url:'http://localhost:3000/getCategory',
+                    success: function (response){
+                        categories=response;
+                        displayCategoriesTable(categories);
+                        console.log(categories)
+                    }
+                })
+
+    $('#search-input-cat').on('keyup',function(){
+    var value1 = $(this).val();
+    console.log('Value:',value1);
+    var data1 = searchCategoryTable(value1,categories)
+    displayCategoriesTable(data1);
+})
+
+displayCategoriesTable(categories)
+
+function searchCategoryTable(value1,data1)
+{
+        var filterCategoryData = []
+        for(var i = 0; i<data1.length; i++){
+            value1 = value1.toLowerCase()
+            var name = data1[i].categoryName.toLowerCase()
+            if(name.includes(value1)){
+                filterCategoryData.push(data1[i])
+            }
+        }
+        return filterCategoryData
+    }
+
+        function displayCategoriesTable(categories)
+        {
+            var table = document.getElementById("categories_table")
+            table.innerHTML = ''
+            for(var i = 0;i < categories.length;i++)
+            {
+                var row = `<tr>
+                                
+                                <td>${categories[i]._id}</td>
+                                <td>${categories[i].categoryName}</td>
+                                <td><button id="deleteCat" onclick="delete_category(${categories[i]._id})">Delete</button></td>
+                            </tr>`
+                            
+                            table.innerHTML += row;
+            }
+        }
+    function delete_category(id)
+    {
+        fetch(`http://localhost:3000/DelCategory?id=${id}`,{
+        method :'DELETE' 
+        })
+        location.reload()
+    }
+        </script>
+        </div>
+        </body>
+        </html>

@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <title>Product management</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <div id="prod-warehouse">
+            <h2>Product Warehouse</h2>
+            <nav>
+            <a href="addProduct.html">Add new Product</a>
+            <a href="manageProduct.html">Manage Product</a>
+            <a href="manageCategory.html">Manage Categories</a>
+            </nav>
+            <hr color="black">
+            </div>
+            <br>
+            <h3>Add Product</h3>
+            <hr color="green">
+            <div id="new-prod">
+                <p>Product Name</p><input id="prod-name" type="text" placeholder="Product Name" size="180">
+                <br>
+                <div id="inline_prod"><p>MRP</p><input id="mrp"  type="number" placeholder="MRP">
+                <p>Available Quantity</p><input id="Qty" type="text" placeholder="Qty.">
+                <p>Item Measure</p><select id="measure" type="text" placeholder="select">
+                    <option value="Kilogram">Kilogram</option>
+                    <option value="Gram">Gram</option>
+                    <option value="Number">Number</option>
+                    <option value="Litre">Litre</option>
+                </select>
+                <p>Item Category</p><select id="category-dropdown" placeholder="select"></select></div>
+                <script src="categoryDropdown.js"></script>
+                <br>
+                <br>
+                <a href="manageCategory.html" id="add-new-cat">Add New Category</a>
+                <hr color="green">
+                <p id="success-msg"></p>
+                <button  style="float: right;" id="add-prod-invetory" onclick="addProduct()">Add Product To Inventory</button>
+            </div>
+        </div>
+        <script>
+            function addProduct(){
+                document.getElementById('success-msg').innerText = 'Product Added Successfully!';
+
+                var name = document.getElementById('prod-name').value;
+                var mrp = document.getElementById('mrp').value;
+                var qty = document.getElementById('Qty').value;
+                var measure =  document.getElementById('measure').value;
+                var category = document.getElementById("category-dropdown").value;
+
+                var addProd = {
+                    
+                    name: name,
+                    mrp:mrp,
+                    availableStock:qty,
+                    measure:measure,
+                    category:category
+                }
+                var postProd = {
+                    method: 'POST',
+                    headers: {
+                       'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(addProd)
+                }
+                fetch('http://localhost:3000/postProduct',postProd)
+                
+                window.setTimeout(function(){location.reload()},3000)
+            }
+        </script>
+        
+    </body>
+</html>
