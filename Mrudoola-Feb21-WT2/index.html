@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>Quiz</title>
+        <link rel="stylesheet" href="style.css"> 
+        <link rel="stylesheet" href="new_styles.css">
+        <script  src="data.js"></script>
+        <script src="new_index.js"></script>
+    </head>
+    <body>
+        
+      <div id="container" >
+            <h2>Setup Quiz</h2>
+            <p>Number of Question: 5</p>
+            <p>Category:
+            <select id="category" name="category">
+                <dl>
+                    <dd><option id="env" value="Environment">Environment</option></dd>
+                    <dd><option id="sports" value="Sports">Sports</option></dd>
+                </dl>
+            </p>
+          </select>
+          <br><br>
+          <p>Select Difficulty:
+            <select id="category1" name="category">
+                <dl>
+                    <dd><option value="easy">Easy</option></dd>
+                    <dd><option value="difficult">Hard</option></dd>
+                </dl>
+            </p>
+          </select>
+          <br><br>
+             <a id="start_a" href="new_index.html">Start!</a>
+        </div>
+        
+        <script>
+           // var num = document.getElementById("numberQ").value;
+            var cat = document.getElementById("category").value;
+            var difficult = document.getElementById("category1").value;
+            //console.log(num);
+            console.log(cat);
+            console.log(difficult);
+            //localStorage.setItem("numOfQuestions",num);
+            localStorage.setItem("Category",cat);
+            localStorage.setItem("Difficulty",difficult);
+        </script>
+    </body>
+</html>
